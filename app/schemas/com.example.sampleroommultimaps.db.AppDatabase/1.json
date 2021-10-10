@@ -1,0 +1,148 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "3b89fbd1cba0f394602e77b93a860d35",
+    "entities": [
+      {
+        "tableName": "Bank",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`bank_id` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`bank_id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "bank_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "bank_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Payment",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`payment_id` TEXT NOT NULL, `amount` INTEGER NOT NULL, `user_id` TEXT NOT NULL, PRIMARY KEY(`payment_id`), FOREIGN KEY(`user_id`) REFERENCES `User`(`user_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "payment_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "payment_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Payment_user_id",
+            "unique": false,
+            "columnNames": [
+              "user_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Payment_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "User",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "user_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "User",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `user_name` TEXT NOT NULL, `bank_id` TEXT NOT NULL, PRIMARY KEY(`user_id`), FOREIGN KEY(`bank_id`) REFERENCES `Bank`(`bank_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bankId",
+            "columnName": "bank_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "user_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_User_bank_id",
+            "unique": false,
+            "columnNames": [
+              "bank_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_User_bank_id` ON `${TABLE_NAME}` (`bank_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Bank",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "bank_id"
+            ],
+            "referencedColumns": [
+              "bank_id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b89fbd1cba0f394602e77b93a860d35')"
+    ]
+  }
+}
